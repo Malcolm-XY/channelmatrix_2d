@@ -178,5 +178,7 @@ results = k_fold_evaluation_circle(
 results_df = pd.DataFrame(results)
 columns_order = ['Identifier'] + [col for col in results_df.columns if col != 'Identifier']
 results_df = results_df[columns_order]
-output_path = os.path.join(os.getcwd(), 'Results', +'.xlsx')
+
+# *** should revise save path
+output_path = os.path.join(os.getcwd(), 'Results', 'a.xlsx')
 results_df.to_excel(output_path, index=False, sheet_name='K-Fold Results')
