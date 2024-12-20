@@ -123,9 +123,9 @@ def train_and_evaluate_model(model, device, train_loader, val_loader, fold):
         'f1_score': f1
     }
 
-def k_fold_evaluation_circle(model, mapping_func, resolution, feature, subject_range, experiment_range):
+def k_fold_evaluation_circle(model, mapping_func, dist, resolution, interp, feature, subject_range, experiment_range):
     labels = utils.get_label()
-    distribution = utils.get_distribution('auto')
+    distribution = utils.get_distribution(dist)
     
     results_entry = []
     for sub in subject_range:
@@ -136,9 +136,9 @@ def k_fold_evaluation_circle(model, mapping_func, resolution, feature, subject_r
             data_beta = utils.get_channel_feature_mat(feature, 'beta', f'sub{sub}ex{ex}')
             data_gamma = utils.get_channel_feature_mat(feature, 'gamma', f'sub{sub}ex{ex}')
 
-            alpha_mapped = mapping_func(data_alpha, distribution, resolution, interpolation=True)
-            beta_mapped = mapping_func(data_beta, distribution, resolution, interpolation=True)
-            gamma_mapped = mapping_func(data_gamma, distribution, resolution, interpolation=True, imshow=True)
+            alpha_mapped = mapping_func(data_alpha, distribution, resolution, interpolation=interp)
+            beta_mapped = mapping_func(data_beta, distribution, resolution, interpolation=interp)
+            gamma_mapped = mapping_func(data_gamma, distribution, resolution, interpolation=interp, imshow=True)
 
             alpha_mapped = utils.safe_normalize(alpha_mapped)
             beta_mapped = utils.safe_normalize(beta_mapped)
@@ -164,11 +164,15 @@ from Models import models_multiscale
 
 # model = models.EnhancedCNN2DModel2(channels=3)
 model = models_multiscale.MultiScaleCNN_1()
+mapping_func = channel_mapping_2d.mapping_2d
+# mapping_func = channel_mapping_2d.orthographic_projection_2d
+# mapping_func = channel_mapping_2d.stereographic_projection_2d
+distribution, resolution, interp = 'manual', 24, False
 
-feature = 'de_LDS'
-subject_range, experiment_range = range(11, 16), range(1, 4)
-# results = k_fold_evaluation_circle(model, channel_mapping_2d.orthographic_projection_2d, 24, feature, subject_range, experiment_range)
-results = k_fold_evaluation_circle(model, channel_mapping_2d.stereographic_projection_2d, 24, feature, subject_range, experiment_range)
+feature, subject_range, experiment_range = 'de_LDS', range(6, 16), range(1, 4)
+
+results = k_fold_evaluation_circle(
+    model, mapping_func, distribution, resolution, interp, feature, subject_range, experiment_range)
 
 # Save to xlsx
 results_df = pd.DataFrame(results)
