@@ -167,9 +167,9 @@ model = models_multiscale.MultiScaleCNN_1()
 mapping_func = channel_mapping_2d.mapping_2d
 # mapping_func = channel_mapping_2d.orthographic_projection_2d
 # mapping_func = channel_mapping_2d.stereographic_projection_2d
-distribution, resolution, interp = 'manual', 24, False
+distribution, resolution, interp = 'manual', 24, True
 
-feature, subject_range, experiment_range = 'de_LDS', range(6, 16), range(1, 4)
+feature, subject_range, experiment_range = 'de_LDS', range(1, 16), range(1, 4)
 
 results = k_fold_evaluation_circle(
     model, mapping_func, distribution, resolution, interp, feature, subject_range, experiment_range)
@@ -178,5 +178,5 @@ results = k_fold_evaluation_circle(
 results_df = pd.DataFrame(results)
 columns_order = ['Identifier'] + [col for col in results_df.columns if col != 'Identifier']
 results_df = results_df[columns_order]
-output_path = os.path.join(os.getcwd(),'k_fold_results.xlsx')
+output_path = os.path.join(os.getcwd(), 'Results', +'.xlsx')
 results_df.to_excel(output_path, index=False, sheet_name='K-Fold Results')
