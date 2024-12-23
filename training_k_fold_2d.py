@@ -163,11 +163,11 @@ import channel_mapping_2d
 from Models import models_multiscale
 
 # model = models.EnhancedCNN2DModel2(channels=3)
-model = models_multiscale.MultiScaleCNN_1()
-mapping_func = channel_mapping_2d.mapping_2d
+model = models_multiscale.MultiScaleCNN()
+# mapping_func = channel_mapping_2d.mapping_2d
 # mapping_func = channel_mapping_2d.orthographic_projection_2d
-# mapping_func = channel_mapping_2d.stereographic_projection_2d
-distribution, resolution, interp = 'manual', 24, True
+mapping_func = channel_mapping_2d.stereographic_projection_2d
+distribution, resolution, interp = 'auto', 24, True
 
 feature, subject_range, experiment_range = 'de_LDS', range(1, 16), range(1, 4)
 
@@ -179,6 +179,10 @@ results_df = pd.DataFrame(results)
 columns_order = ['Identifier'] + [col for col in results_df.columns if col != 'Identifier']
 results_df = results_df[columns_order]
 
-# *** should revise save path
-output_path = os.path.join(os.getcwd(), 'Results', 'a.xlsx')
+# File name
+output_path = os.path.join(
+    os.getcwd(),
+    'Results',
+    f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+)
 results_df.to_excel(output_path, index=False, sheet_name='K-Fold Results')

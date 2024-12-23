@@ -174,17 +174,49 @@ def _apply_rounding(x, y, method):
         return round(x), round(y)
     raise ValueError("Invalid rounding method. Choose 'floor', 'ceil', or 'round'.")
 
-def fill_zeros_with_interpolation(data, resolution, interp_method='linear'):
-    filled_data = np.copy(data)
-    for sample_idx in range(data.shape[0]):
-        sample = data[sample_idx]
+# def fill_zeros_with_interpolation(data, resolution, interp_method='linear'):
+#     filled_data = np.copy(data)
+#     for sample_idx in range(data.shape[0]):
+#         sample = data[sample_idx]
+#         non_zero_coords = np.array(np.nonzero(sample)).T
+#         non_zero_values = sample[non_zero_coords[:, 0], non_zero_coords[:, 1]]
+#         grid_x, grid_y = np.mgrid[0:resolution, 0:resolution]
+#         grid_points = np.array([grid_x.flatten(), grid_y.flatten()]).T
+#         filled_values = griddata(non_zero_coords, non_zero_values, grid_points, method=interp_method, fill_value=0)
+#         filled_data[sample_idx] = filled_values.reshape(resolution, resolution)
+#     return filled_data
+
+from joblib import Parallel, delayed
+
+def fill_zeros_with_interpolation(data, resolution, interp_method='linear', n_jobs=-1):
+    """
+    使用并行化的方式对多个样本进行插值填充。
+
+    参数：
+        data (ndarray): 输入数据，形状为 (num_samples, resolution, resolution)。
+        resolution (int): 网格分辨率。
+        interp_method (str): 插值方法，例如 'linear', 'nearest', 'cubic'。
+        n_jobs (int): 并行线程数，-1 表示使用所有 CPU 核心。
+
+    返回：
+        filled_data (ndarray): 插值填充后的数据。
+    """
+    def interpolate_sample(sample):
         non_zero_coords = np.array(np.nonzero(sample)).T
+        if len(non_zero_coords) == 0:
+            return sample  # 如果样本全为零，直接返回
         non_zero_values = sample[non_zero_coords[:, 0], non_zero_coords[:, 1]]
         grid_x, grid_y = np.mgrid[0:resolution, 0:resolution]
         grid_points = np.array([grid_x.flatten(), grid_y.flatten()]).T
         filled_values = griddata(non_zero_coords, non_zero_values, grid_points, method=interp_method, fill_value=0)
-        filled_data[sample_idx] = filled_values.reshape(resolution, resolution)
-    return filled_data
+        return filled_values.reshape(resolution, resolution)
+
+    # 使用并行处理每个样本
+    filled_data = Parallel(n_jobs=n_jobs)(
+        delayed(interpolate_sample)(data[sample_idx]) for sample_idx in range(data.shape[0])
+    )
+    return np.array(filled_data)
+
 
 # %% Example Usage
 def example_usage():
