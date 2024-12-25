@@ -88,7 +88,7 @@ from Models import models_multiscale
 model = models_multiscale.MultiScaleCNN()
 mapping_func = channel_mapping_2d.orthographic_projection_2d
 # mapping_func = channel_mapping_2d.stereographic_projection_2d
-distribution, resolution, interp = 'auto', 32, True
+distribution, resolution, interp = 'manual', 64, True
 
 feature, subject_range, experiment_range = 'de_LDS', range(1, 16), range(1, 4)
 
@@ -108,6 +108,6 @@ output_path = os.path.join(
 )
 results_df.to_excel(output_path, index=False, sheet_name='K-Fold Results')
 
-# # Shutdown computer
-# print("Program completed. Shutting down...")
-# os.system("shutdown /s /t 1")
+# Shutdown computer
+print("Program completed. Shutting down...")
+os.system("shutdown /s /t 1")
