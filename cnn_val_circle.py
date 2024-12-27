@@ -90,7 +90,7 @@ model = models_multiscale.MultiScaleCNN()
 mapping_func = channel_mapping_2d.stereographic_projection_2d
 distribution, resolution, interp = 'auto', 9, True
 
-feature, subject_range, experiment_range = 'de', range(1, 16), range(1, 4)
+feature, subject_range, experiment_range = 'psd_LDS', range(1, 16), range(1, 4)
 
 results = cnn_cross_validation_circle(
     model, mapping_func, distribution, resolution, interp, feature, subject_range, experiment_range)

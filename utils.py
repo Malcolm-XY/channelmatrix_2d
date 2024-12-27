@@ -198,11 +198,12 @@ def read_mat_single_idx_5chs(path_data, name_feature, name_experiment):
         
         return data_delta, data_theta, data_alpha, data_beta, data_gamma
     
-# # test code
-# path_current = os.getcwd()
-# path_parent = os.path.dirname(path_current)
-# path_data = os.path.join(path_parent, 'data', 'SEED', 'channel features')
+# test code
+path_current = os.getcwd()
+path_parent = os.path.dirname(path_current)
+path_data = os.path.join(path_parent, 'data', 'SEED', 'channel features')
 
-# # data_alpha, data_beta, data_gamma = read_mat_single_idx_3chs(path_data, 'de_LDS', 'sub1ex1.mat')
-# data_alpha1 = read_mat(os.path.join(path_data, 'de_LDS', 'sub1ex1.mat'))
-# data_alpha2 = get_channel_feature_mat('de_LDS', 'alpha', 'sub1ex1')
+# data_alpha, data_beta, data_gamma = read_mat_single_idx_3chs(path_data, 'de_LDS', 'sub1ex1.mat')
+# data_alpha1 = read_mat(os.path.join(path_data, 'psd_LDS', 'sub1ex1.mat'))
+data_alpha2 = get_channel_feature_mat('psd_LDS', 'alpha', 'sub1ex1')
+data_alpha3 = get_channel_feature_mat('de_LDS', 'alpha', 'sub1ex1')
