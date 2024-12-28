@@ -86,9 +86,9 @@ from Models import models_multiscale
 
 # model = models.EnhancedCNN2DModel2(channels=3)
 model = models_multiscale.MultiScaleCNN()
-# mapping_func = channel_mapping_2d.orthographic_projection_2d
-mapping_func = channel_mapping_2d.stereographic_projection_2d
-distribution, resolution, interp = 'auto', 9, True
+mapping_func = channel_mapping_2d.orthographic_projection_2d
+# mapping_func = channel_mapping_2d.stereographic_projection_2d
+distribution, resolution, interp = 'auto', 32, True
 
 feature, subject_range, experiment_range = 'psd_LDS', range(1, 16), range(1, 4)
 
