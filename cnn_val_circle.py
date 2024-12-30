@@ -108,6 +108,6 @@ output_path = os.path.join(
 )
 results_df.to_excel(output_path, index=False, sheet_name='K-Fold Results')
 
-# Shutdown computer
-print("Program completed. Shutting down...")
-os.system("shutdown /s /t 1")
+# # Shutdown computer
+# print("Program completed. Shutting down...")
+# os.system("shutdown /s /t 1")
