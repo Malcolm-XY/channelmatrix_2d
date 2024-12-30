@@ -88,9 +88,9 @@ from Models import models_multiscale
 model = models_multiscale.MultiScaleCNN()
 mapping_func = channel_mapping_2d.orthographic_projection_2d
 # mapping_func = channel_mapping_2d.stereographic_projection_2d
-distribution, resolution, interp = 'manual', 24, True
+distribution, resolution, interp = 'manual', 16, True
 
-feature, subject_range, experiment_range = 'psd_LDS', range(1, 16), range(1, 4)
+feature, subject_range, experiment_range = 'de_LDS', range(1, 16), range(1, 4)
 
 results = cnn_cross_validation_circle(
     model, mapping_func, distribution, resolution, interp, feature, subject_range, experiment_range)
@@ -107,6 +107,10 @@ output_path = os.path.join(
     f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
 )
 results_df.to_excel(output_path, index=False, sheet_name='K-Fold Results')
+
+# Play sound
+import winsound
+winsound.Beep(1000, 500)  # 频率为1000Hz，持续500ms
 
 # # Shutdown computer
 # print("Program completed. Shutting down...")
