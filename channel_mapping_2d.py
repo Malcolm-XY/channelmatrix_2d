@@ -219,24 +219,22 @@ def fill_zeros_with_interpolation(data, resolution, interp_method='linear', n_jo
 
 
 # %% Example Usage
-def example_usage():
+if __name__ == '__main__':
     import utils
 
     # data and distribution
-    data_alpha = utils.get_channel_feature_mat('de_LDS', 'gamma', 'sub1ex1')
-    distribution = utils.get_distribution('auto')
-    # distribution_manual = utils.get_distribution('manual')
+    data_sample = utils.get_channel_feature_mat('de_LDS', 'gamma', 'sub1ex1')
+    dist_auto = utils.get_distribution('auto')
+    dist_manual = utils.get_distribution('manual')
 
-    # # manual orthograph
-    # alpha_2d = mapping_2d(data_alpha, distribution, 24, interpolation=False)
-    # alpha_2d_interpolated = mapping_2d(data_alpha, distribution, 24, interpolation=True, interp_method='linear')
+    # manual orthograph
+    sample_ortho_manual = mapping_2d(data_sample, dist_manual, 9, interpolation=False, imshow=True)
+    # sample_ortho_manual_interpolated = mapping_2d(data_sample, dist_manual, 9, interpolation=True, interp_method='linear')
 
-    # # auto orthograph
-    alpha_2d_or = orthographic_projection_2d(data_alpha, distribution, 24, interpolation=False, imshow=True)
-    alpha_2d_or_interpolated = orthographic_projection_2d(data_alpha, distribution, 24, interpolation=True, interp_method='linear', imshow=True)
+    # auto orthograph
+    sample_2d_or = orthographic_projection_2d(data_sample, dist_auto, 16, interpolation=False, imshow=True)
+    # sample_2d_or_interpolated = orthographic_projection_2d(data_sample, dist_auto, 16, interpolation=True, interp_method='linear', imshow=True)
 
     # auto stereographic
-    alpha_2d_st = stereographic_projection_2d(data_alpha, distribution, 24, interpolation=False, prominence=0.1, imshow=True)
-    alpha_2d_st_interpolated = stereographic_projection_2d(data_alpha, distribution, 24, interpolation=True, interp_method='linear', prominence=0.1, imshow=True)
-
-# example_usage()
+    sample_2d_st = stereographic_projection_2d(data_sample, dist_auto, 16, interpolation=False, prominence=0.1, imshow=True)
+    # sample_2d_st_interpolated = stereographic_projection_2d(data_sample, dist_auto, 16, interpolation=True, interp_method='linear', prominence=0.1, imshow=True)
