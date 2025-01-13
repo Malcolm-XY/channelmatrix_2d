@@ -91,10 +91,10 @@ psd_significance = [[None, None, None], [None, None, None], [None, None, None]]
 
 # Test with DE_LDS
 plot_mapping_with_values_and_significance(
-    de_resolutions, de_manual, de_ortho, de_stereo, "DE_LDS", de_significance
+    de_resolutions, de_manual, de_ortho, de_stereo, "DE-LDS", de_significance
 )
 
 # Test with PSD_LDS
 plot_mapping_with_values_and_significance(
-    psd_resolutions, psd_manual, psd_ortho, psd_stereo, "PSD_LDS", psd_significance
+    psd_resolutions, psd_manual, psd_ortho, psd_stereo, "PSD-LDS", psd_significance
 )
