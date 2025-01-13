@@ -191,17 +191,19 @@ def end_program_actions(play_sound=True, shutdown=False, countdown_seconds=30):
         shutdown_with_countdown(countdown_seconds)
 
 # %% Usage
-# from Models import models
 import channel_mapping_2d
+from Models import models
 from Models import models_multiscale
 
-# model = models.EnhancedCNN2DModel2(channels=3)
-model = models_multiscale.MultiScaleCNN()
-# mapping_func = channel_mapping_2d.orthographic_projection_2d
-mapping_func = channel_mapping_2d.stereographic_projection_2d
-distribution, resolution, interp = 'auto', 16, False
+model = models.CNN2D()
+# model = models_multiscale.MultiScaleCNN()
 
-feature, subject_range, experiment_range = 'psd_LDS', range(1, 16), range(1, 4)
+mapping_func = channel_mapping_2d.orthographic_projection_2d
+# mapping_func = channel_mapping_2d.stereographic_projection_2d
+
+distribution, resolution, interp = 'auto', 64, True
+
+feature, subject_range, experiment_range = 'DE_LDS', range(1, 16), range(1, 4)
 
 # Validation
 results = cnn_cross_validation_circle(
@@ -213,4 +215,4 @@ filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_in
 save_results_to_xlsx_append(results, output_dir, filename)
 
 # End program actions
-end_program_actions(play_sound=True, shutdown=True, countdown_seconds=60)
+end_program_actions(play_sound=True, shutdown=False, countdown_seconds=60)
