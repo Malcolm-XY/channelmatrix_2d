@@ -170,7 +170,7 @@ def shutdown_with_countdown(countdown_seconds=30):
     else:
         print("\nShutdown aborted.")
 
-def end_program_actions(play_sound=True, shutdown=False, countdown_seconds=30):
+def end_program_actions(play_sound=True, shutdown=False, countdown_seconds=120):
     """
     Performs actions at the end of the program, such as playing a sound or shutting down the system.
 
@@ -195,7 +195,7 @@ import channel_mapping_2d
 from Models import models
 from Models import models_multiscale
 
-model = models.CNN2D()
+model = models._3layers_avgpool()
 # model = models_multiscale.MultiScaleCNN()
 
 mapping_func = channel_mapping_2d.orthographic_projection_2d
@@ -215,4 +215,4 @@ filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_in
 save_results_to_xlsx_append(results, output_dir, filename)
 
 # End program actions
-end_program_actions(play_sound=True, shutdown=False, countdown_seconds=60)
+end_program_actions(play_sound=True, shutdown=False)
