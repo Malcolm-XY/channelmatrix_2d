@@ -195,13 +195,13 @@ import channel_mapping_2d
 from Models import models
 from Models import models_multiscale
 
-model = models.CNN2D_3layers_maxpool()
+model = models.CNN2DModel_3layers_maxpool()
 # model = models_multiscale.MultiScaleCNN()
 
-mapping_func = channel_mapping_2d.orthographic_projection_2d
-# mapping_func = channel_mapping_2d.stereographic_projection_2d
+# mapping_func = channel_mapping_2d.orthographic_projection_2d
+mapping_func = channel_mapping_2d.stereographic_projection_2d
 
-distribution, resolution, interp = 'auto', 16, True
+distribution, resolution, interp = 'auto', 36, False
 
 feature, subject_range, experiment_range = 'DE_LDS', range(1, 6), range(1, 4)
 
