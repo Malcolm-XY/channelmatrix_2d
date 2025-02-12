@@ -192,18 +192,16 @@ def end_program_actions(play_sound=True, shutdown=False, countdown_seconds=120):
 
 # %% Usage
 import channel_mapping_2d
-from Models import models
-from Models import models_multiscale
+from models import models
 
-model = models.CNN2DModel_3layers_maxpool()
-# model = models_multiscale.MultiScaleCNN()
+model = models.CNN_2layers_adaptive_maxpool_3()
 
-# mapping_func = channel_mapping_2d.orthographic_projection_2d
-mapping_func = channel_mapping_2d.stereographic_projection_2d
+mapping_func = channel_mapping_2d.orthographic_projection_2d
+# mapping_func = channel_mapping_2d.stereographic_projection_2d
 
-distribution, resolution, interp = 'auto', 36, False
+distribution, resolution, interp = 'auto', 16, True
 
-feature, subject_range, experiment_range = 'DE_LDS', range(1, 6), range(1, 4)
+feature, subject_range, experiment_range = 'DE_LDS', range(1, 16), range(1, 4)
 
 # Validation
 results = cnn_cross_validation_circle(
