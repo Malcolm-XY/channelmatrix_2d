@@ -8,63 +8,31 @@ import os
 import numpy as np
 import pandas as pd
 
-import utils
+import utils_feature_loading
 import cnn_validation
 
-def cnn_validation_circle(model, mapping_func, dist, resolution, interp, feature, subject_range, experiment_range):
-    labels = utils.get_label()
-    distribution = utils.get_distribution(dist)
+def cnn_cross_validation_circle(model, mapping_func, dataset, dist, resolution, interp, feature, subject_range, experiment_range):
+    """"
+    Currently only support SEED dataset.
+    """
+    labels = utils_feature_loading.read_labels(dataset)
+    distribution = utils_feature_loading.read_distribution(dist)
     
     results_entry = []
     for sub in subject_range:
         for ex in experiment_range:
-            file_name = f'sub{sub}ex{ex}.mat'
-            print(f'Processing {file_name}...')
-            data_alpha = utils.get_channel_feature_mat(feature, 'alpha', f'sub{sub}ex{ex}')
-            data_beta = utils.get_channel_feature_mat(feature, 'beta', f'sub{sub}ex{ex}')
-            data_gamma = utils.get_channel_feature_mat(feature, 'gamma', f'sub{sub}ex{ex}')
+            identifier = f'sub{sub}ex{ex}'
+            print(f'Processing {identifier}...')
 
-            alpha_mapped = mapping_func(data_alpha, distribution, resolution, interpolation=interp)
-            beta_mapped = mapping_func(data_beta, distribution, resolution, interpolation=interp)
-            gamma_mapped = mapping_func(data_gamma, distribution, resolution, interpolation=interp, imshow=True)
+            cfs = utils_feature_loading.read_fcs(dataset, identifier, 'joint')
+            cfs_alpha = cfs['alpha']
+            cfs_beta = cfs['beta']
+            cfs_gamma = cfs['gamma']
 
-            alpha_mapped = utils.safe_normalize(alpha_mapped)
-            beta_mapped = utils.safe_normalize(beta_mapped)
-            gamma_mapped = utils.safe_normalize(gamma_mapped)
-            
-            data_mapped = np.stack((alpha_mapped, beta_mapped, gamma_mapped), axis=1)
-            
-            result = cnn_validation.cnn_validation(model, data_mapped, labels)
-            
-            # Add identifier to the result
-            result['Identifier'] = f'sub{sub}ex{ex}'
-            results_entry.append(result)
 
-    # print(f'Final Results: {results_entry}')
-    print('K-Fold Validation compelete\n')
-    
-    return results_entry
-
-def cnn_cross_validation_circle(model, mapping_func, dist, resolution, interp, feature, subject_range, experiment_range):
-    labels = utils.get_label()
-    distribution = utils.get_distribution(dist)
-    
-    results_entry = []
-    for sub in subject_range:
-        for ex in experiment_range:
-            file_name = f'sub{sub}ex{ex}.mat'
-            print(f'Processing {file_name}...')
-            data_alpha = utils.get_channel_feature_mat(feature, 'alpha', f'sub{sub}ex{ex}')
-            data_beta = utils.get_channel_feature_mat(feature, 'beta', f'sub{sub}ex{ex}')
-            data_gamma = utils.get_channel_feature_mat(feature, 'gamma', f'sub{sub}ex{ex}')
-
-            alpha_mapped = mapping_func(data_alpha, distribution, resolution, interpolation=interp)
-            beta_mapped = mapping_func(data_beta, distribution, resolution, interpolation=interp)
-            gamma_mapped = mapping_func(data_gamma, distribution, resolution, interpolation=interp, imshow=True)
-
-            alpha_mapped = utils.safe_normalize(alpha_mapped)
-            beta_mapped = utils.safe_normalize(beta_mapped)
-            gamma_mapped = utils.safe_normalize(gamma_mapped)
+            alpha_mapped = mapping_func(cfs_alpha, distribution, resolution, interpolation=interp)
+            beta_mapped = mapping_func(cfs_beta, distribution, resolution, interpolation=interp)
+            gamma_mapped = mapping_func(cfs_gamma, distribution, resolution, interpolation=interp, imshow=True)
             
             data_mapped = np.stack((alpha_mapped, beta_mapped, gamma_mapped), axis=1)
             

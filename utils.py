@@ -94,7 +94,7 @@ def get_channel_feature_mat(feature, band, experiment):
     path_parent = os.path.dirname(path_current)
     
     # path_data
-    path_data = os.path.join(path_parent, '..', 'Research_Data', 'SEED', 'channel features', feature, experiment + '.mat')
+    path_data = os.path.join(path_parent, '..', 'Research_Data', 'SEED', 'channel features', f'{feature}_h5', experiment + '.h5')
     
     # mat data
     mat_data = read_mat(path_data)
@@ -202,10 +202,10 @@ def read_mat_single_idx_5chs(path_data, name_feature, name_experiment):
 if __name__ == '__main__':
     path_current = os.getcwd()
     path_parent = os.path.dirname(path_current)
-    path_data = os.path.join(path_parent, '..', 'Research_Data', 'SEED', 'channel features')
-    data_alpha, data_beta, data_gamma = read_mat_single_idx_3chs(path_data, 'de_LDS', 'sub1ex1.mat')
+    path_parent_parent = os.path.dirname(path_parent)
+    path_data = os.path.join(path_parent_parent, 'Research_Data', 'SEED', 'channel features')
     
-    data_alpha1 = read_mat(os.path.join(path_data, 'psd_LDS', 'sub1ex1.mat'))
-    
-    data_alpha2 = get_channel_feature_mat('psd_LDS', 'alpha', 'sub1ex1')
-    data_alpha3 = get_channel_feature_mat('de_LDS', 'alpha', 'sub1ex1')
+    data_alpha = read_mat(os.path.join(path_data, 'de_LDS_h5', 'sub1ex1.h5'))
+
+    import utils_feature_loading
+    data_alpha_ = utils_feature_loading.read_cfs('seed', 'sub1ex1', 'de_LDS', 'joint')
