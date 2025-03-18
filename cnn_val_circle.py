@@ -15,8 +15,9 @@ def cnn_cross_validation_circle(model, mapping_func, dataset, dist, resolution, 
     """"
     Currently only support SEED dataset.
     """
-    labels = utils_feature_loading.read_labels(dataset)
-    distribution = utils_feature_loading.read_distribution(dist)
+    labels = np.array(utils_feature_loading.read_labels(dataset))
+    labels = np.reshape(labels, -1)
+    distribution = utils_feature_loading.read_distribution(dataset, dist)
     
     results_entry = []
     for sub in subject_range:
@@ -24,7 +25,7 @@ def cnn_cross_validation_circle(model, mapping_func, dataset, dist, resolution, 
             identifier = f'sub{sub}ex{ex}'
             print(f'Processing {identifier}...')
 
-            cfs = utils_feature_loading.read_fcs(dataset, identifier, 'joint')
+            cfs = utils_feature_loading.read_cfs(dataset, identifier, feature)
             cfs_alpha = cfs['alpha']
             cfs_beta = cfs['beta']
             cfs_gamma = cfs['gamma']
@@ -173,7 +174,7 @@ feature, subject_range, experiment_range = 'DE_LDS', range(1, 16), range(1, 4)
 
 # Validation
 results = cnn_cross_validation_circle(
-    model, mapping_func, distribution, resolution, interp, feature, subject_range, experiment_range)
+    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
 
 # Save results to XLSX (append mode)
 output_dir = os.path.join(os.getcwd(), 'Results')
