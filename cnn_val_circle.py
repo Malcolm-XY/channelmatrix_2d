@@ -168,7 +168,7 @@ model = models.CNN_2layers_adaptive_maxpool_3()
 mapping_func = channel_mapping_2d.orthographic_projection_2d
 # mapping_func = channel_mapping_2d.stereographic_projection_2d
 
-distribution, resolution, interp = 'auto', 16, True
+distribution, resolution, interp = 'manual', 9, False
 
 feature, subject_range, experiment_range = 'DE_LDS', range(1, 16), range(1, 4)
 
