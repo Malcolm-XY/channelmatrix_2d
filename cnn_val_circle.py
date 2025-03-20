@@ -8,6 +8,8 @@ import os
 import numpy as np
 import pandas as pd
 
+import torch
+
 import utils_feature_loading
 import cnn_validation
 
@@ -15,8 +17,8 @@ def cnn_cross_validation_circle(model, mapping_func, dataset, dist, resolution, 
     """"
     Currently only support SEED dataset.
     """
-    labels = np.array(utils_feature_loading.read_labels(dataset))
-    labels = np.reshape(labels, -1)
+    labels = torch.tensor(np.array(utils_feature_loading.read_labels(dataset)))
+    targets = labels.view(-1)
     distribution = utils_feature_loading.read_distribution(dataset, dist)
     
     results_entry = []
@@ -37,7 +39,9 @@ def cnn_cross_validation_circle(model, mapping_func, dataset, dist, resolution, 
             
             data_mapped = np.stack((alpha_mapped, beta_mapped, gamma_mapped), axis=1)
             
-            result = cnn_validation.cnn_cross_validation(model, data_mapped, labels)
+            # Training and Validation
+            # Run validation in no_grad mode to avoid unnecessary gradient computation
+            result = cnn_validation.cnn_cross_validation(model, data_mapped, targets)
             
             # Add identifier to the result
             result['Identifier'] = f'sub{sub}ex{ex}'
@@ -168,9 +172,10 @@ model = models.CNN_2layers_adaptive_maxpool_3()
 mapping_func = channel_mapping_2d.orthographic_projection_2d
 # mapping_func = channel_mapping_2d.stereographic_projection_2d
 
-distribution, resolution, interp = 'manual', 9, False
+# %%
+distribution, resolution, interp = 'auto', 9, False
 
-feature, subject_range, experiment_range = 'DE_LDS', range(1, 16), range(1, 4)
+feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
 
 # Validation
 results = cnn_cross_validation_circle(
@@ -181,5 +186,47 @@ output_dir = os.path.join(os.getcwd(), 'Results')
 filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
 save_results_to_xlsx_append(results, output_dir, filename)
 
-# End program actions
+# %%
+distribution, resolution, interp = 'auto', 16, False
+
+feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
+
+# Validation
+results = cnn_cross_validation_circle(
+    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
+
+# Save results to XLSX (append mode)
+output_dir = os.path.join(os.getcwd(), 'Results')
+filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+save_results_to_xlsx_append(results, output_dir, filename)
+
+# %%
+distribution, resolution, interp = 'auto', 24, False
+
+feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
+
+# Validation
+results = cnn_cross_validation_circle(
+    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
+
+# Save results to XLSX (append mode)
+output_dir = os.path.join(os.getcwd(), 'Results')
+filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+save_results_to_xlsx_append(results, output_dir, filename)
+
+# %%
+distribution, resolution, interp = 'auto', 32, False
+
+feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
+
+# Validation
+results = cnn_cross_validation_circle(
+    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
+
+# Save results to XLSX (append mode)
+output_dir = os.path.join(os.getcwd(), 'Results')
+filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+save_results_to_xlsx_append(results, output_dir, filename)
+
+# %% End program actions
 end_program_actions(play_sound=True, shutdown=False)
