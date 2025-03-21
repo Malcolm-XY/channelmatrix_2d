@@ -173,23 +173,9 @@ mapping_func = channel_mapping_2d.orthographic_projection_2d
 # mapping_func = channel_mapping_2d.stereographic_projection_2d
 
 # %%
-distribution, resolution, interp = 'auto', 9, False
+distribution, resolution, interp = 'manual', 9, True
 
-feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
-
-# Validation
-results = cnn_cross_validation_circle(
-    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
-
-# Save results to XLSX (append mode)
-output_dir = os.path.join(os.getcwd(), 'Results')
-filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
-save_results_to_xlsx_append(results, output_dir, filename)
-
-# %%
-distribution, resolution, interp = 'auto', 16, False
-
-feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
+feature, subject_range, experiment_range = 'DE_LDS', range(1, 16), range(1, 4)
 
 # Validation
 results = cnn_cross_validation_circle(
@@ -201,32 +187,46 @@ filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_in
 save_results_to_xlsx_append(results, output_dir, filename)
 
 # %%
-distribution, resolution, interp = 'auto', 24, False
+# distribution, resolution, interp = 'auto', 16, True
 
-feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
+# feature, subject_range, experiment_range = 'PSD_LDS', range(1, 16), range(1, 4)
 
-# Validation
-results = cnn_cross_validation_circle(
-    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
+# # Validation
+# results = cnn_cross_validation_circle(
+#     model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
 
-# Save results to XLSX (append mode)
-output_dir = os.path.join(os.getcwd(), 'Results')
-filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
-save_results_to_xlsx_append(results, output_dir, filename)
+# # Save results to XLSX (append mode)
+# output_dir = os.path.join(os.getcwd(), 'Results')
+# filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+# save_results_to_xlsx_append(results, output_dir, filename)
 
-# %%
-distribution, resolution, interp = 'auto', 32, False
+# # %%
+# distribution, resolution, interp = 'auto', 24, True
 
-feature, subject_range, experiment_range = 'PSD', range(1, 16), range(1, 4)
+# feature, subject_range, experiment_range = 'PSD_LDS', range(1, 16), range(1, 4)
 
-# Validation
-results = cnn_cross_validation_circle(
-    model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
+# # Validation
+# results = cnn_cross_validation_circle(
+#     model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
 
-# Save results to XLSX (append mode)
-output_dir = os.path.join(os.getcwd(), 'Results')
-filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
-save_results_to_xlsx_append(results, output_dir, filename)
+# # Save results to XLSX (append mode)
+# output_dir = os.path.join(os.getcwd(), 'Results')
+# filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+# save_results_to_xlsx_append(results, output_dir, filename)
+
+# # %%
+# distribution, resolution, interp = 'auto', 32, True
+
+# feature, subject_range, experiment_range = 'PSD_LDS', range(1, 16), range(1, 4)
+
+# # Validation
+# results = cnn_cross_validation_circle(
+#     model, mapping_func, "SEED", distribution, resolution, interp, feature, subject_range, experiment_range)
+
+# # Save results to XLSX (append mode)
+# output_dir = os.path.join(os.getcwd(), 'Results')
+# filename = f"{mapping_func.__name__[:3]}_dist_{distribution}_res_{resolution}_interp_{interp}.xlsx"
+# save_results_to_xlsx_append(results, output_dir, filename)
 
 # %% End program actions
 end_program_actions(play_sound=True, shutdown=False)
